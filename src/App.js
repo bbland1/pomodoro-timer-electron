@@ -1,10 +1,14 @@
 import React from 'react';
 import Timer from './Components/Timer.jsx';
+import TimeSettings from './Components/TimeSettings.jsx';
 
 
 function App() {
   return (
-    <Timer />
+    <div>
+      <Timer />
+      <TimeSettings />
+    </div>
   )
 }
 
