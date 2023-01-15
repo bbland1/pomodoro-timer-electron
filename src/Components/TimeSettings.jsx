@@ -21,8 +21,6 @@ function TimeSettings() {
 
   function handleSubmitTime(e) {
     e.preventDefault();
-    console.log(cycleTiming);
-    console.log(typeof cycleTiming.shortBreak);
   }
 
   return (

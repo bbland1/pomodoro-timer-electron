@@ -5,12 +5,17 @@ import timerStyles from '../moduleCSS/Timer.module.css';
 function Timer() {
   const [countdown, setCountdown] = useState(false);
   const [workCycles, setWorkCycles] = useState(0);
+  const [key, setKey] = useState(0);
 
-  function startTimer() {
+  function startPauseTimer() {
     setCountdown(!countdown)
   }
 
-  const children = ({ remainingTime }, color) => {
+  function resetTimer() {
+    setKey(prevKey => prevKey + 1);
+  }
+
+  const children = ({ remainingTime, color}) => {
     const minutes = Math.floor(remainingTime / 60)
     const seconds = remainingTime % 60
   
@@ -18,9 +23,10 @@ function Timer() {
     const formatSec = seconds.toString().padStart(2, '0');
   
     return (
-      <div style={color}>
-        <span>title</span>
-        <p className={timerStyles.digital}>{formatMin}:{formatSec}</p>
+      <div style={{color}}>
+        <div>It's time to</div>
+        <div className={timerStyles.digital}>{formatMin}:{formatSec}</div>
+        <div>Work</div>
       </div>)
   }
 
@@ -30,15 +36,19 @@ function Timer() {
       <CountdownCircleTimer
         isPlaying={countdown}
         duration={60}
-        colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-        colorsTime={[10, 6, 3, 0]}
+        colors={["#285430", "#5F8D4E", "#A4BE7B", "#CCD6A6", "#DAE2B6"]}
+        colorsTime={[60, 48, 36, 24, 0]}
         size={270}
-        >{children}
+        strokeWidth={12}
+        children={children}
+        key={key}
+        onComplete={() => {
+          return { shouldRepeat: true }
+        }}>
       </CountdownCircleTimer>
         <div className={timerStyles.controls}>
-          <button onClick={startTimer}>Start</button>
-          <button onClick={startTimer}>Pause</button>
-          <button>Reset</button>
+          <button onClick={startPauseTimer}>{countdown ? "Pause" : "Start"}</button>
+          <button onClick={resetTimer}>Reset</button>
         </div>
       </div>
     </div>
