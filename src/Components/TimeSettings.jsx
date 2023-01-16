@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 
-function TimeSettings() {
-  const [cycleTiming, setCycleTiming] = useState({
-    work: '25',
-    shortBreak: '5',
-    longBreak: '15',
-    cycles: '4',
+function TimeSettings(props) {
+  const [newCycleInfo, setNewCycleInfo] = useState({
+    work: 25,
+    shortBreak: 5,
+    longBreak: 15,
+    cycles: 4,
   })
 
   function handleTimeInputs(e) {
     const { name, value } = e.target;
 
-    setCycleTiming((prevTimeInput) => {
+    setNewCycleInfo((prevTimeInput) => {
       return {
         ...prevTimeInput,
         [name]: value
@@ -20,7 +20,17 @@ function TimeSettings() {
   }
 
   function handleSubmitTime(e) {
+    
+    props.setTime(newCycleInfo);
     e.preventDefault();
+
+
+    setNewCycleInfo({
+      work: 25,
+      shortBreak: 5,
+      longBreak: 15,
+      cycles: 4,
+    })
   }
 
   return (
@@ -31,7 +41,7 @@ function TimeSettings() {
           name="work"
           type="number"
           onChange={handleTimeInputs}
-          value={cycleTiming.work}
+          value={newCycleInfo.work}
         />
       </label>
       <br></br>
@@ -41,7 +51,7 @@ function TimeSettings() {
           name="shortBreak"
           type="number"
           onChange={handleTimeInputs}
-          value={cycleTiming.shortBreak}
+          value={newCycleInfo.shortBreak}
         />
       </label>
       <br></br>
@@ -51,7 +61,7 @@ function TimeSettings() {
           name="longBreak"
           type="number"
           onChange={handleTimeInputs}
-          value={cycleTiming.longBreak}
+          value={newCycleInfo.longBreak}
         />
       </label>
       <br></br>
@@ -61,7 +71,7 @@ function TimeSettings() {
           name="cycles"
           type="number"
           onChange={handleTimeInputs}
-          value={cycleTiming.cycles}
+          value={newCycleInfo.cycles}
         />
       </label>
       <input type="submit" />
