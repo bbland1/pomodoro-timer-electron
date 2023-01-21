@@ -20,7 +20,6 @@ function TimeSettings(props) {
   }
 
   function handleSubmitTime(e) {
-    
     props.setTime(newCycleInfo);
     e.preventDefault();
 
@@ -40,6 +39,7 @@ function TimeSettings(props) {
         <input
           name="work"
           type="number"
+          min={1}
           onChange={handleTimeInputs}
           value={newCycleInfo.work}
         />
@@ -50,6 +50,7 @@ function TimeSettings(props) {
         <input
           name="shortBreak"
           type="number"
+          min={1}
           onChange={handleTimeInputs}
           value={newCycleInfo.shortBreak}
         />
@@ -60,6 +61,7 @@ function TimeSettings(props) {
         <input
           name="longBreak"
           type="number"
+          min={1}
           onChange={handleTimeInputs}
           value={newCycleInfo.longBreak}
         />
@@ -70,6 +72,7 @@ function TimeSettings(props) {
         <input
           name="cycles"
           type="number"
+          min={1}
           onChange={handleTimeInputs}
           value={newCycleInfo.cycles}
         />

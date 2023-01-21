@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+import { app, BrowserWindow } from 'electron';
+import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+import path from 'path';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -27,7 +28,12 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', createWindow)
+  // .whenReady(() => {
+  //   installExtension(REACT_DEVELOPER_TOOLS)
+  //     .then(name => console.log(`Added Extension ${name}`))
+  //     .catch(err => console.log(`A ${err} occurred.`));
+  // });
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
