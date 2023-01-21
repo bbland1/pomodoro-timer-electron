@@ -1,41 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import TimeSettings from './TimeSettings.jsx';
-import timerStyles from '../moduleCSS/Timer.module.css';
+import timerStyles from '../CSS/Timer.module.css';
 
 function Timer() {
+  // TODO: Look into useReducer maybe if all these states are needed or refactor
   const [countdown, setCountdown] = useState(false);
-  const [cycleInfo, setCycleInfo] = useState({
-    work: 0,
-    shortBreak: 0,
-    longBreak: 0,
-    cycles: 0,
+  const [timeInfo, setTimeInfo] = useState({
+    work: 1500,
+    shortBreak: 300,
+    longBreak: 900,
+    cycles: 4,
   });
+  const [cycleCount, setCycleCount] = useState(0);
+  const [durationInfo, setDurationInfo] = useState(0);
   const [key, setKey] = useState(0);
 
-  useEffect(() => {
-    console.log(`after change: ${cycleInfo.work}`);
-  }, [cycleInfo])
-
   function setTiming(timing) {
-    console.log(`timing coming in: ${timing.work}`)
-    console.log(`before change: ${cycleInfo.work}`);
-    setCycleInfo({
+    setTimeInfo({
       work: timing.work * 60,
       shortBreak: timing.shortBreak * 60,
       longBreak: timing.longBreak * 60,
       cycles: timing.cycles
     });
+
+    // setDurationInfo(timing.work);
   }
 
-  // function setDurationAndCycles(cycleInfo) {
-  //   let cycleCount = 0;
-
-  //   if (cycleCount )
-  // }
+  function setDurationAndCycles() {
+    console.log(`cycle count: ${cycleCount}`);
+    setCycleCount(cycleCount + 1);
+    
+    if (cycleCount > 8){
+      setCountdown(!countdown);
+      setCycleCount(0);
+      return false
+    } else if (cycleCount % 8 === 0) {
+      console.log(`long break`);
+      setDurationInfo(timeInfo.longBreak);
+      return true
+    } else if (cycleCount % 2 === 0) {
+      console.log(`short break`);
+      setDurationInfo(timeInfo.shortBreak);
+      return true
+    } else {
+      console.log(`work time`);
+      setDurationInfo(timeInfo.work);
+      return true
+    }
+  }
 
   function startPauseTimer() {
-    setCountdown(!countdown)
+    if (cycleCount === 0) {
+      setCycleCount(cycleCount + 2);
+    }
+    setCountdown(!countdown);
   }
 
   function resetTimer() {
@@ -51,9 +70,9 @@ function Timer() {
 
     return (
       <div style={{ color }}>
-        <div>It's time to</div>
+        <div>It's time for</div>
         <div className={timerStyles.digital}>{formatMin}:{formatSec}</div>
-        <div>Work</div>
+        <div>test</div>
       </div>)
   }
 
@@ -62,7 +81,7 @@ function Timer() {
       <div className={timerStyles.timer}>
         <CountdownCircleTimer
           isPlaying={countdown}
-          duration={cycleInfo.work}
+          duration={!durationInfo ? timeInfo.work : durationInfo}
           colors={["#285430", "#5F8D4E", "#A4BE7B", "#CCD6A6", "#DAE2B6"]}
           // colorsTime={[60, 48, 36, 24, 0]}
           size={270}
@@ -70,7 +89,9 @@ function Timer() {
           children={children}
           key={key}
           onComplete={() => {
-            return { shouldRepeat: true }
+            let shouldRepeat = setDurationAndCycles();
+
+            return { shouldRepeat: shouldRepeat }
           }}>
         </CountdownCircleTimer>
         <div className={timerStyles.controls}>
